@@ -13,7 +13,7 @@ module.exports = {
 
       const conn = await pool.getConnection();
       await conn.execute(
-          'INSERT INTO otps (phone, otp, expires_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE otp = ?, expires_at = ?',
+          'INSERT INTO otps (phone_number, otp, expires_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE otp = ?, expires_at = ?',
           [phone, otp, expires_at, otp, expires_at]
       );
       conn.release();
@@ -62,7 +62,7 @@ module.exports = {
       const conn = await pool.getConnection();
       const [rows] = await conn.execute(
           `SELECT * FROM otps 
-       WHERE (phone = ? OR phone = ?) 
+       WHERE (phone_number = ? OR phone_number = ?) 
        AND otp = ? 
        AND expires_at > NOW()`,
           [phone, `+${phone}`, otp]
