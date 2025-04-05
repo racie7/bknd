@@ -1,5 +1,7 @@
 const pool = require('../config/db');
 const crypto = require('crypto');
+const axios = require('axios');
+
 
 module.exports = {
   sendOtp: async (req, res) => {
