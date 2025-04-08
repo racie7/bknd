@@ -24,6 +24,8 @@ module.exports = {
   },
 
   getUserPhone: async (req, res) => {
+    console.log('🔔 Hit getUserPhone route');
+
     try {
       const { CRID } = req.params;
 
@@ -40,8 +42,9 @@ module.exports = {
         return res.status(404).json({ message: 'Client not found' });
       }
     } catch (err) {
-      console.error('Get user phone error:', err);
+      console.error('🔥 Caught error in getUserPhone:', err);
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
+
 };
