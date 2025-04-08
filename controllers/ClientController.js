@@ -3,9 +3,9 @@ const pool = require('../config/db');
 module.exports = {
   storeClient: async (req, res) => {
     try {
-      const { deriv_account_id, phone } = req.body;
+      const { CRID, phone_number } = req.body;
 
-      if (!deriv_account_id || !phone) {
+      if (!CRID || !phone_number) {
         return res.status(400).json({ message: 'Account ID and phone are required' });
       }
 
