@@ -6,7 +6,7 @@ router.use('/nd-deposits', require('./deposits'));
 router.use('/nd-withdrawals', require('./withdrawals'));
 router.use('/nd-rates', require('./rates'));
 router.use('/nd-otp', require('./otp'));
-router.use('/nd-user', require('./user'));
-router.use('/nd-client', require('./client'));
+router.use('/', require('./user'));
+router.use('/', require('./client'));
 
 module.exports = router;
