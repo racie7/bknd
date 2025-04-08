@@ -31,6 +31,9 @@ module.exports = {
       const [rows] = await conn.execute('SELECT phone_number FROM clients WHERE CRID = ?', [CRID]);
       conn.release();
 
+      console.log('CRID requested:', CRID);
+      console.log('DB rows returned:', rows);
+
       if (rows.length > 0) {
         return res.status(200).json({ phone_number: rows[0].phone_number });
       } else {
