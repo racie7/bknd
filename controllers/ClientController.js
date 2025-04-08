@@ -11,8 +11,8 @@ module.exports = {
 
       const conn = await pool.getConnection();
       await conn.execute(
-        'INSERT INTO clients (deriv_account_id, phone) VALUES (?, ?) ON DUPLICATE KEY UPDATE phone = ?',
-        [deriv_account_id, phone, phone]
+        'INSERT INTO clients (CRID, phone_number) VALUES (?, ?) ON DUPLICATE KEY UPDATE phone_number = ?',
+        [CRID, phone_number, phone_number]
       );
       conn.release();
 
@@ -28,11 +28,11 @@ module.exports = {
       const { CRID } = req.params;
 
       const conn = await pool.getConnection();
-      const [rows] = await conn.execute('SELECT phone FROM clients WHERE deriv_account_id = ?', [CRID]);
+      const [rows] = await conn.execute('SELECT phone_number FROM clients WHERE CRID = ?', [CRID]);
       conn.release();
 
       if (rows.length > 0) {
-        return res.status(200).json({ phone: rows[0].phone });
+        return res.status(200).json({ phone_number: rows[0].phone_number });
       } else {
         return res.status(404).json({ message: 'Client not found' });
       }
