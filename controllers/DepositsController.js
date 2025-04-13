@@ -3,16 +3,16 @@ const pool = require('../config/db');
 module.exports = {
   store: async (req, res) => {
     try {
-      const { phone_number, amount, rate, deriv_account_id } = req.body;
+      const { phone_number, amount, rate, loginid } = req.body;
 
-      if (!phone_number || !amount || !rate || !deriv_account_id) {
+      if (!phone_number || !amount || !rate || !loginid) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
       const conn = await pool.getConnection();
       await conn.execute(
-        'INSERT INTO deposits (phone_number, amount, rate, deriv_account_id) VALUES (?, ?, ?, ?)',
-        [phone_number, amount, rate, deriv_account_id]
+        'INSERT INTO deposits (phone_number, amount, rate, loginid) VALUES (?, ?, ?, ?)',
+        [phone_number, amount, rate, loginid]
       );
       conn.release();
 
@@ -29,7 +29,7 @@ module.exports = {
 
       const conn = await pool.getConnection();
       const [rows] = await conn.execute(
-        'SELECT * FROM deposits WHERE deriv_account_id = ? ORDER BY created_at DESC',
+        'SELECT * FROM deposits WHERE loginid = ? ORDER BY created_at DESC',
         [CRID]
       );
       conn.release();
@@ -47,7 +47,7 @@ module.exports = {
 
       const conn = await pool.getConnection();
       const [rows] = await conn.execute(
-        'SELECT SUM(amount) as total FROM deposits WHERE deriv_account_id = ?',
+        'SELECT SUM(amount) as total FROM deposits WHERE loginid = ?',
         [CRID]
       );
       conn.release();
