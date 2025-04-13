@@ -30,6 +30,7 @@ module.exports = {
       return res.status(500).json({ message: 'Internal server error' });
     }
 
+
   },
 
   getUserPhone: async (req, res) => {
