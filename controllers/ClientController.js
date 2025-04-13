@@ -3,17 +3,25 @@ const pool = require('../config/db');
 module.exports = {
   storeClient: async (req, res) => {
     try {
-      const { CRID, phone_number } = req.body;
+      const { CRID, fullname, email, phone_number } = req.body;
 
-      if (!CRID || !phone_number) {
-        return res.status(400).json({ message: 'Account ID and phone are required' });
+      if (!CRID || !fullname || !email || !phone_number) {
+        return res.status(400).json({ message: 'All fields are required' });
       }
 
       const conn = await pool.getConnection();
+
       await conn.execute(
-        'INSERT INTO clients (CRID, phone_number) VALUES (?, ?) ON DUPLICATE KEY UPDATE phone_number = ?',
-        [CRID, phone_number, phone_number]
+          `INSERT INTO clients (CRID, fullname, email, phone_number, created_at, updated_at)
+     VALUES (?, ?, ?, ?, NOW(), NOW())
+     ON DUPLICATE KEY UPDATE
+       fullname = VALUES(fullname),
+       email = VALUES(email),
+       phone_number = VALUES(phone_number),
+       updated_at = NOW()`,
+          [CRID, fullname, email, phone_number]
       );
+
       conn.release();
 
       return res.status(201).json({ message: 'Client stored successfully' });
@@ -21,6 +29,7 @@ module.exports = {
       console.error('Store client error:', err);
       return res.status(500).json({ message: 'Internal server error' });
     }
+
   },
 
   getUserPhone: async (req, res) => {
